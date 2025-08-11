@@ -1,0 +1,94 @@
+apiVersion: sonataflow.org/v1alpha08
+kind: SonataFlow
+metadata:
+  annotations:
+    sonataflow.org/description: ""
+    sonataflow.org/expressionLang: jq
+    sonataflow.org/profile: gitops
+    sonataflow.org/version: "1.0"
+  creationTimestamp: null
+  labels:
+    app: helloworld
+    app.kubernetes.io/component: serverless-workflow
+    app.kubernetes.io/managed-by: sonataflow-operator
+    app.kubernetes.io/name: helloworld
+    sonataflow.org/workflow-app: helloworld
+    sonataflow.org/workflow-namespace: sonataflow-kafka-example
+  name: helloworld
+  namespace: sonataflow-kafka-example
+spec:
+  flow:
+    events:
+    - dataOnly: true
+      kind: consumed
+      name: startEvent
+      type: start_event
+    - dataOnly: true
+      kind: produced
+      name: exitEvent
+      type: exit_event
+    start:
+      stateName: WaitStartEvent
+    states:
+    - exclusive: true
+      name: WaitStartEvent
+      onEvents:
+      - actionMode: sequential
+        eventDataFilter:
+          useData: true
+        eventRefs:
+        - startEvent
+      transition:
+        nextState: Inject Hello World
+      type: event
+    - data:
+        greeting: Hello World
+      name: Inject Hello World
+      transition:
+        nextState: Inject Mantra
+      type: inject
+    - data:
+        mantra: Serverless Workflow is awesome!
+      end:
+        produceEvents:
+        - data: null
+          eventRef: exitEvent
+        terminate: true
+      name: Inject Mantra
+      type: inject
+  podTemplate:
+    container:
+      # Image generated with regular docker
+      # image: quay.io/wmedvede/serverless-workflow-kafka-with-tls:1.0-00-jvm
+      # Image generated with the swf-builder image
+      # Be sure you use any of your own generated images.
+      image: quay.io/wmedvede/serverless-workflow-kafka-with-tls:1.0-00
+      env:
+        - name: TRUSTSTORE_PASS
+          valueFrom:
+            secretKeyRef:
+              name: kafka-client-truststore
+              key: truststore-password
+        - name: KEYSTORE_PASS
+          valueFrom:
+            secretKeyRef:
+              name: kafka-client-keystore
+              key: user.password
+      volumeMounts:
+        - name: truststore-volume
+          mountPath: /deployment/truststore
+          readOnly: true
+        - name: keystore-volume
+          mountPath: /deployment/keystore
+          readOnly: true
+      resources: {}
+    volumes:
+      - name: truststore-volume
+        secret:
+          secretName: kafka-client-truststore
+      - name: keystore-volume
+        secret:
+          secretName: kafka-client-keystore
+status:
+  address: {}
+  lastTimeRecoverAttempt: null

@@ -1,0 +1,11 @@
+apiVersion: sonataflow.org/v1alpha08
+kind: SonataFlowPlatform
+metadata:
+  name: sonataflow-platform
+spec:
+  services:
+    # for the example we just use the ephemeral DI and JS deployments.
+    dataIndex:
+      enabled: true
+    jobService:
+      enabled: true

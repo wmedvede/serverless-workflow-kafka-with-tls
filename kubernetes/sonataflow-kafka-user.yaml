@@ -1,0 +1,9 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: sonataflow-kafka-user
+  labels:
+    strimzi.io/cluster: sonataflow-kafka-cluster
+spec:
+  authentication:
+    type: tls

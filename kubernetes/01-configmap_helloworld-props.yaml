@@ -1,0 +1,40 @@
+apiVersion: v1
+data:
+  application.properties: |+
+
+    # kafka broker provisioned by the example
+    kafka.bootstrap.servers=sonataflow-kafka-cluster-kafka-bootstrap.sonataflow-kafka.svc.cluster.local:9093
+
+    mp.messaging.connector.smallrye-kafka.security.protocol=SSL
+
+    # Specify the enabled TLS protocols (forcing TLSv1.2 | TLSv1.3), etc.
+    # The setting of this property might depend on the broker version/configuration, etc.
+    # For the current Strimzi 0.47.0 installation provisioned by the example it's automatically calculated, on other 
+    # scenarios you might need to set it.
+    #mp.messaging.connector.smallrye-kafka.ssl.enabled.protocols=TLSv1.2
+    #mp.messaging.connector.smallrye-kafka.ssl.enabled.protocols=TLSv1.3
+
+    # Truststore configuration to validate the broker's certificate
+    mp.messaging.connector.smallrye-kafka.ssl.truststore.type=pkcs12
+    mp.messaging.connector.smallrye-kafka.ssl.truststore.location=/deployment/truststore/kafka.truststore.p12
+    # see spec.podTemplate.container.env 
+    mp.messaging.connector.smallrye-kafka.ssl.truststore.password=${TRUSTSTORE_PASS}
+
+    # Keystore configuration to authenticate the client against the broker
+    mp.messaging.connector.smallrye-kafka.ssl.keystore.type=pkcs12
+    mp.messaging.connector.smallrye-kafka.ssl.keystore.location=/deployment/keystore/user.p12
+    # see spec.podTemplate.container.env
+    mp.messaging.connector.smallrye-kafka.ssl.keystore.password=${KEYSTORE_PASS}
+
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    app: helloworld
+    app.kubernetes.io/component: serverless-workflow
+    app.kubernetes.io/managed-by: sonataflow-operator
+    app.kubernetes.io/name: helloworld
+    sonataflow.org/workflow-app: helloworld
+    sonataflow.org/workflow-namespace: sonataflow-kafka-example
+  name: helloworld-props
+  namespace: sonataflow-kafka-example
