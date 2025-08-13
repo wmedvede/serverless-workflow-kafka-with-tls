@@ -5,7 +5,7 @@
 REGISTRY_USER=$USER
 REGISTRY=quay.io
 
-IMG=$REGISTRY/$USER/serverless-workflow-kafka-with-tls:1.0-00
+IMG=$REGISTRY/$USER/serverless-workflow-kafka-with-tls:1.0-1.35.0-00
 
 # additional extensions to connect with kafka.
 QUARKUS_EXTENSIONS=io.quarkus:quarkus-smallrye-reactive-messaging-kafka:3.8.6.redhat-00004

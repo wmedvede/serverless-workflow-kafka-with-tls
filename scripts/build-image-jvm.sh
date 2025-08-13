@@ -5,7 +5,7 @@
 REGISTRY_USER=$USER
 REGISTRY=quay.io
 
-IMG=$REGISTRY/$USER/serverless-workflow-kafka-with-tls:1.0-00-jvm
+IMG=$REGISTRY/$USER/serverless-workflow-kafka-with-tls:1.0-1.35.0-00-jvm
 
 docker build -f ./docker/Dockerfile.jvm -t $IMG .
 
