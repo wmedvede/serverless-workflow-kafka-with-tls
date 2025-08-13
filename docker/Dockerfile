@@ -1,4 +1,4 @@
-FROM registry.redhat.io/openshift-serverless-1/logic-swf-builder-rhel8:1.35.0 AS builder
+FROM registry.redhat.io/openshift-serverless-1/logic-swf-builder-rhel8:1.36.0 AS builder
 
 # variables that can be overridden by the builder
 # To add a Quarkus extension to your application
@@ -18,7 +18,7 @@ RUN /home/kogito/launch/build-app.sh ./resources
 #=============================
 # Runtime Run
 #=============================
-FROM registry.access.redhat.com/ubi8/openjdk-17-runtime:latest
+FROM registry.access.redhat.com/ubi9/openjdk-17-runtime:latest
 
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en'
 

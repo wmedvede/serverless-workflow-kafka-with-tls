@@ -59,10 +59,10 @@ spec:
   podTemplate:
     container:
       # Image generated with regular docker
-      # image: quay.io/wmedvede/serverless-workflow-kafka-with-tls:1.0-1.35.0-00-jvm
+      # image: quay.io/wmedvede/serverless-workflow-kafka-with-tls:1.0-1.36.0-00-jvm
       # Image generated with the swf-builder image
       # Be sure you use any of your own generated images.
-      image: quay.io/wmedvede/serverless-workflow-kafka-with-tls:1.0-1.35.0-00
+      image: quay.io/wmedvede/serverless-workflow-kafka-with-tls:1.0-1.36.0-00
       env:
         - name: TRUSTSTORE_PASS
           valueFrom:
